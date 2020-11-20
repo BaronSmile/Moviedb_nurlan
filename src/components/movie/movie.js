@@ -12,13 +12,21 @@ const Movie = ({image, title, releaseDate, overview}) => {
   const posterUrl = movieApi.apiPostersUrlBase;
   const imgUrl = `${posterUrl}${image}`;
 
+  // функция для сокрашения слов в описании
+  const formatPost = (str = '', length) => {
+    if (str.length <= length) return str
+    const newLength = str.lastIndexOf(' ', length)
+    return `${str.slice(0, newLength)} ...`
+  }
+  const description = formatPost(overview, 200)
+
   return (
       <>
         <Card
             hoverable
-            style={{width: '45%', display: 'flex', margin: '24px'}}
+            style={{width: '45%', height: '280px', display: 'flex', margin: '24px'}}
             cover={
-              image == null ? (
+              image === null ? (
                   <img
                       alt="example"
                       src="https://www.samsung.com/etc/designs/smg/global/imgs/support/cont/NO_IMG_600x600.png"
@@ -34,7 +42,7 @@ const Movie = ({image, title, releaseDate, overview}) => {
             <div>
               <Tag>Action</Tag>
             </div>
-            <Text>{overview}</Text>
+            <Text>{description}</Text>
           </Space>
         </Card>
       </>
@@ -45,7 +53,7 @@ Movie.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   releaseDate: PropTypes.string.isRequired,
-  overview: PropTypes.string.isRequired
+  overview: PropTypes.string.isRequired,
 };
 
 export default Movie;

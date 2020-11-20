@@ -1,3 +1,7 @@
 .ant-card-cover {
-  width: 100%;
+}
+
+.ant-card-cover img{
+  height: 280px;
+  width: 185px;
 }

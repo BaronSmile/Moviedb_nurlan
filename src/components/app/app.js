@@ -16,38 +16,27 @@ export default class App extends Component {
     super(props);
     this.state = {
       movies: [],
-      searchTerm: '',
+      searchTerm: 'return'
     };
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault()
-    const {searchTerm} = this.state
-    movieApi.searchMovie(searchTerm).then((data) => {
-      this.setState({movies: [...data]});
-    });
-  };
-
-  startPage = () => {
-    // eslint-disable-next-line no-unused-vars
-    const {movies} = this.state
-    movieApi.startMoviePage().then(data => {
-      this.setState({movies: [...data]})
+  componentDidMount() {
+    const {searchTerm} = this.state;
+    movieApi.searchMovie(searchTerm).then(movies=>{
+      this.setMovie([...movies])
     })
   }
 
-  handleChange = (event) => {
-    this.setState({
-      searchTerm: event.target.value,
-    });
-  };
+  setMovie = movies => {
+    this.setState({movies})
+  }
 
   render() {
     const {movies} = this.state;
     return (
 
         <Layout className="container">
-          <SearchInput handleSubmit={this.handleSubmit} handleChange={this.handleChange}/>
+          <SearchInput/>
           <Content className="site-layout">
             <MovieList movies={movies}/>
           </Content>
