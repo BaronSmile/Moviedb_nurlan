@@ -12,33 +12,67 @@ const {Content} = Layout;
 const movieApi = new MovieApi();
 
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+
+    state = {
       movies: [],
-      searchTerm: 'return'
+      searchTerm: 'return',
+      loading: true,
+      error: false,
     };
+
+
+  // eslint-disable-next-line react/sort-comp
+  onError = () => {
+    this.setState({
+      error: true,
+      loading: false
+    })
   }
 
   componentDidMount() {
     const {searchTerm} = this.state;
-    movieApi.searchMovie(searchTerm).then(movies=>{
-      this.setMovie([...movies])
+    movieApi.searchMovie(searchTerm)
+        .then(movies => {
+          this.setMovie([...movies])
+        })
+        .catch(() => this.onError());
+  }
+
+  handleInputChange = (({target:{value}})=>{
+    this.setState({
+      searchTerm: value
     })
+})
+
+  getSearch = ({key}) => {
+    if(key === 'Enter'){
+      const {searchTerm} = this.state;
+      movieApi.searchMovie(searchTerm)
+          .then(movies => {
+            this.setMovie([...movies])
+          })
+    }
   }
 
   setMovie = movies => {
-    this.setState({movies})
-  }
+    this.setState({
+      movies,
+      loading: false,
+    })
+  };
 
   render() {
-    const {movies} = this.state;
-    return (
+    const {movies, loading, error,searchTerm} = this.state;
 
+    return (
         <Layout className="container">
-          <SearchInput/>
+          <SearchInput onKeyPress={this.getSearch} onChange={this.handleInputChange} value={searchTerm}/>
           <Content className="site-layout">
-            <MovieList movies={movies}/>
+            <MovieList
+                movies={movies}
+                loading={loading}
+                error={error}
+            />
           </Content>
         </Layout>
     );

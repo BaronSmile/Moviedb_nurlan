@@ -1,7 +1,22 @@
-.ant-card-cover {
+.ant-card{
+  width: 47%;
+  height: 280px;
+  display: flex;
+  margin: 24px;
 }
 
 .ant-card-cover img{
   height: 280px;
   width: 185px;
+}
+.rate-number{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 2px;
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #E9D100;
+  border-radius: 50%;
 }

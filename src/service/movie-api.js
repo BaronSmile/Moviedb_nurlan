@@ -33,15 +33,3 @@ export default class MovieApi {
   }
 }
 
-/*
-const movieApi = new MovieApi();
-movieApi.startMoviePage().then(data=>console.log(data));
-
-
-
-movieApi.searchMovie('matrix')
-    .then(info => console.log('result:', info))
-
-
-movieApi.getGenres().then(db => console.log(db.genres))
-*/
