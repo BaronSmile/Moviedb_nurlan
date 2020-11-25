@@ -1,26 +1,32 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types'
 
+import {DebounceInput} from 'react-debounce-input';
 import './search-input.css';
-import {Input} from 'antd';
 
 
-// eslint-disable-next-line react/prop-types
-const SearchInput = ({onChange, value, onKeyPress}) => (
-      <Input
-          className='search-input'
-          placeholder="Type to search..."
-          onChange={onChange}
-          onKeyPress={onKeyPress}
-          value={value}
-      />
-)
+export default class SearchInput extends PureComponent {
 
-Input.propTypes = {
-  onChange: PropTypes.func,
-  onKeyPress: PropTypes.func,
-  value: PropTypes.string,
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    onKeyPress: PropTypes.func.isRequired,
+    value: PropTypes.string.isRequired,
+  }
+
+  render() {
+    const {onChange, value, onKeyPress} = this.props
+
+
+    return (
+        <DebounceInput
+            className='search-input'
+            placeholder="Type to search..."
+            debounceTimeout={2000}
+            onChange={onChange}
+            onKeyPress={onKeyPress}
+            value={value}
+        />
+    )
+  }
 }
 
-
-export default SearchInput;

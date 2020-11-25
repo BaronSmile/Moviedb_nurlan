@@ -7,3 +7,7 @@ body{
 .site-layout {
   background: #fff;
 }
+
+.pagination{
+  margin: 20px 0;
+}

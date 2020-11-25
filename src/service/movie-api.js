@@ -6,6 +6,7 @@ export default class MovieApi {
 
   apiPostersUrlBase = `https://image.tmdb.org/t/p/w500`;
 
+
   async getResource(url) {
     const res = await fetch(`${this.apiBase}${url}`);
     if (!res.ok) {
@@ -14,18 +15,10 @@ export default class MovieApi {
     return res.json();
   }
 
-  async startMoviePage() {
-    const start = await this.getResource(
-        `movie/popular?api_key=${this.apiKey}`
-    );
-    return start.results;
-  }
-
   async searchMovie(keyword, page) {
-    const res = await this.getResource(
+    return this.getResource(
         `search/movie?api_key=${this.apiKey}&query=${keyword}&language=en-US&page=${page}&include_adult=true`
     );
-    return res.results;
   }
 
   async getGenres() {
