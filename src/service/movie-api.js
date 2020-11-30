@@ -24,5 +24,6 @@ export default class MovieApi {
   async getGenres() {
     return this.getResource(`genre/movie/list?api_key=${this.apiKey}&language=en-US`);
   }
+
 }
 

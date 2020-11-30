@@ -7,6 +7,7 @@ import {Layout, Pagination, Row} from 'antd';
 import SearchInput from '../search-input/search-input';
 import MovieApi from '../../service/movie-api';
 import MovieList from '../movie-list/movie-list';
+import {Provider} from '../../service/movie-api_context'
 
 const {Content} = Layout;
 
@@ -20,7 +21,7 @@ export default class App extends Component {
     searchTerm: 'return',
     loading: true,
     error: false,
-    mode:'search',
+    mode: 'search',
   };
 
   movieApi = new MovieApi();
@@ -28,6 +29,11 @@ export default class App extends Component {
   componentDidMount() {
     const {searchTerm, page} = this.state
     this.updateMoviesList(searchTerm, page)
+    this.movieApi.getGenres().then((data) => {
+
+      this.genres = data.genres;
+      console.log('app:',this.genres)
+    })
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -40,7 +46,6 @@ export default class App extends Component {
     }
   }
 
-  // eslint-disable-next-line react/sort-comp
   changePage = (page) => {
     this.setState({
       page,
@@ -70,6 +75,7 @@ export default class App extends Component {
 
     this.movieApi.searchMovie(str, page)
         .then(res => {
+          console.log('app:', res.results)
           this.setState({
             movies: res.results,
             totalPages: res.total_pages,
@@ -82,7 +88,6 @@ export default class App extends Component {
   }
 
   handleInputChange = (({target: {value}}) => {
-    console.log(value)
     this.setState({
       searchTerm: value
     })
@@ -108,7 +113,7 @@ export default class App extends Component {
 
   render() {
 
-    const {movies, loading, error, searchTerm, page, totalPages}= this.state;
+    const {movies, loading, error, searchTerm, page, totalPages} = this.state;
     const hasData = !(loading || error)
 
     const pagination = hasData ?
@@ -120,21 +125,23 @@ export default class App extends Component {
             onChange={(value) => this.changePage(value)}
             total={totalPages}
         /> : null
-
+    console.log('render: ', this.genres)
     return (
-        <Layout className="container">
-          <SearchInput onKeyPress={this.getSearch} onChange={this.handleInputChange} value={searchTerm}/>
-          <Content className="site-layout">
-            <MovieList
-                movies={movies}
-                loading={loading}
-                error={error}
-            />
-            <Row className='pagination' justify="center">
-              {pagination}
-            </Row>
-          </Content>
-        </Layout>
+        <Provider value={this.genres}>
+          <Layout className="container">
+            <SearchInput onKeyPress={this.getSearch} onChange={this.handleInputChange} value={searchTerm}/>
+            <Content className="site-layout">
+              <MovieList
+                  movies={movies}
+                  loading={loading}
+                  error={error}
+              />
+              <Row className='pagination' justify="center">
+                {pagination}
+              </Row>
+            </Content>
+          </Layout>
+        </Provider>
     );
   }
 }

@@ -27,11 +27,12 @@ export default class MovieList extends Component {
           </div>
       )
     }
+
     const errorMessage = error ? <Alert message="Informational Notes" type="info" showIcon/> : null;
 
 
     const moviesList =
-        movies.map(({id, poster_path: posterPath, title, release_date: releaseDate, overview, vote_average: voteAverage}) => {
+        movies.map(({id, poster_path: posterPath, title, release_date: releaseDate, overview, vote_average: voteAverage, genre_ids: genreIDs}) => {
           return (
               <Movie
                   key={id}
@@ -40,6 +41,8 @@ export default class MovieList extends Component {
                   releaseDate={releaseDate}
                   overview={overview}
                   rateNumber={voteAverage}
+                  genreID={genreIDs}
+                  id={id}
               />
           );
         })
